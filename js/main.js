@@ -4,7 +4,7 @@
 
   // Scroll reveal
   const revealTargets = document.querySelectorAll(
-    ".section-head, .about-grid, .role, .project, .skill-group, .contact-row"
+    ".section-head, .about-grid, .org-label, .role, .project, .skill-group, .edu-item, .contact-row"
   );
   revealTargets.forEach((el) => el.classList.add("reveal"));
 
