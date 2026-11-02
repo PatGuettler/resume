@@ -520,6 +520,10 @@ a:hover {
   max-width: 42rem;
 }
 
+.project-main > p:not(.project-tags) + p {
+  margin-top: 0.75rem;
+}
+
 .project-links {
   display: flex;
   flex-wrap: wrap;
