@@ -1,0 +1,46 @@
+name: Build résumé PDF
+
+# Re-renders Patrick-Guettler-Resume.pdf from index.html whenever the page or its styles
+# change on main, and commits the result so GitHub Pages serves an up-to-date download.
+# Commits made with GITHUB_TOKEN don't trigger workflows, so this can't loop.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'index.html'
+      - 'css/**'
+      - 'js/main.js'
+      - 'scripts/build-pdf.cjs'
+      - '.github/workflows/resume-pdf.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: resume-pdf
+  cancel-in-progress: true
+
+jobs:
+  pdf:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - run: npm install --no-save playwright@1.63.0
+      - run: npx playwright install --with-deps chromium
+      - run: node scripts/build-pdf.cjs
+      - name: Commit PDF if it changed
+        run: |
+          if git diff --quiet -- Patrick-Guettler-Resume.pdf; then
+            echo "PDF unchanged"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898699+github-actions[bot]@users.noreply.github.com"
+          git add Patrick-Guettler-Resume.pdf
+          git commit -m "Rebuild résumé PDF"
+          git push
