@@ -1058,12 +1058,20 @@ body.forge-open {
 
   .print-contact {
     margin: 0.3rem 0 0;
-    font-size: 8.8pt;
+    font-size: 8.5pt;
+    white-space: nowrap;
     color: var(--muted);
   }
 
-  .print-contact span + span::before {
-    content: "  ·  ";
+  .print-contact a + a::before {
+    content: "·";
+    margin: 0 0.45em;
+    color: var(--muted);
+  }
+
+  .print-contact a:first-child {
+    color: var(--teal);
+    font-weight: 600;
   }
 
   .hero-lede {
